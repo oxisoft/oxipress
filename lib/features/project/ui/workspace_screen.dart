@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/generated/app_localizations.dart';
+import '../../editor/ui/editor_panel.dart';
 import '../../file_tree/ui/file_tree_panel.dart';
 import '../../shell/ui/status_bar.dart';
 import '../../shell/ui/three_panel_layout.dart';
@@ -27,7 +28,7 @@ class WorkspaceScreen extends StatelessWidget {
               ),
               middle: PanelDefinition(
                 title: l10n.panelTitleEditor,
-                content: _Placeholder(text: l10n.editorPlaceholder),
+                content: const EditorPanel(),
               ),
               right: PanelDefinition(
                 title: l10n.panelTitlePreview,

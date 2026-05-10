@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart' as p;
 
+import '../../../core/providers.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../project/domain/workspace_state.dart';
+import '../../project/ui/project_controller.dart';
 import '../../project/ui/workspace_state_controller.dart';
 import '../domain/file_tree_node.dart';
 import '../domain/file_tree_view.dart';
@@ -71,14 +74,33 @@ class FileTreeRootToggle extends ConsumerWidget {
   }
 }
 
-class _TreeListView extends ConsumerWidget {
+class _TreeListView extends ConsumerStatefulWidget {
   const _TreeListView({required this.view});
 
   final FileTreeView view;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final rows = _flatten(view);
+  ConsumerState<_TreeListView> createState() => _TreeListViewState();
+}
+
+class _TreeListViewState extends ConsumerState<_TreeListView> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = _flatten(widget.view);
     if (rows.isEmpty) {
       return Center(
         child: Padding(
@@ -93,13 +115,15 @@ class _TreeListView extends ConsumerWidget {
       );
     }
     return Scrollbar(
+      controller: _scrollController,
       child: ListView.builder(
+        controller: _scrollController,
         padding: const EdgeInsets.symmetric(vertical: 4),
         itemCount: rows.length,
         itemExtent: 26,
         itemBuilder: (context, index) {
           final row = rows[index];
-          return _TreeRow(row: row, view: view);
+          return _TreeRow(row: row, view: widget.view);
         },
       ),
     );
@@ -182,11 +206,26 @@ class _TreeRow extends ConsumerWidget {
   }
 
   void _onTap(WidgetRef ref) {
-    final controller = ref.read(fileTreeProvider.notifier);
     if (row.node.isDirectory) {
-      controller.toggleFolder(row.node.path);
+      ref.read(fileTreeProvider.notifier).toggleFolder(row.node.path);
+      return;
     }
-    controller.selectPath(row.node.path);
+
+    final lifecycle = ref.read(projectControllerProvider);
+    if (lifecycle is! OpenProject) return;
+
+    if (row.node.isMarkdown) {
+      // Opening a tab updates workspace.activeTabPath, which the file-tree
+      // controller mirrors into its selection on the next rebuild.
+      final relative =
+          p.relative(row.node.path, from: lifecycle.project.path);
+      ref.read(workspaceStateProvider.notifier).openTab(relative);
+    } else {
+      // Fire-and-forget; OsOpener failures are logged at the layer that
+      // surfaces them. Non-markdown files do not affect tree selection.
+      // ignore: unawaited_futures, discarded_futures
+      ref.read(osOpenerProvider).open(row.node.path);
+    }
   }
 
   IconData _iconFor(FileTreeNode node, bool expanded) {

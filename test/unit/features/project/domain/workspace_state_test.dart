@@ -92,4 +92,98 @@ void main() {
       expect(a, b);
     });
   });
+
+  group('WorkspaceState tabs', () {
+    test('defaults: empty open tabs and null active tab', () {
+      expect(WorkspaceState.defaults.openTabs, isEmpty);
+      expect(WorkspaceState.defaults.activeTabPath, isNull);
+    });
+
+    test('JSON round-trip preserves tabs and active tab', () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['content/about.md', 'content/posts/first-post.md'],
+        activeTabPath: 'content/posts/first-post.md',
+      );
+      final restored = WorkspaceState.fromJson(
+        Map<String, Object?>.from(state.toJson()),
+      );
+      expect(restored, state);
+    });
+
+    test('withTabOpened appends + activates a new tab', () {
+      const state = WorkspaceState.defaults;
+      final next = state.withTabOpened('content/foo.md');
+      expect(next.openTabs, ['content/foo.md']);
+      expect(next.activeTabPath, 'content/foo.md');
+    });
+
+    test('withTabOpened on an already-open tab just activates it', () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['a.md', 'b.md'],
+        activeTabPath: 'a.md',
+      );
+      final next = state.withTabOpened('b.md');
+      expect(next.openTabs, ['a.md', 'b.md']);
+      expect(next.activeTabPath, 'b.md');
+    });
+
+    test('withTabClosed removes and falls back to the last remaining tab',
+        () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['a.md', 'b.md', 'c.md'],
+        activeTabPath: 'b.md',
+      );
+      final next = state.withTabClosed('b.md');
+      expect(next.openTabs, ['a.md', 'c.md']);
+      expect(next.activeTabPath, 'c.md');
+    });
+
+    test('withTabClosed clears active when the last tab is closed', () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['only.md'],
+        activeTabPath: 'only.md',
+      );
+      final next = state.withTabClosed('only.md');
+      expect(next.openTabs, isEmpty);
+      expect(next.activeTabPath, isNull);
+    });
+
+    test('withTabClosed leaves active intact when closing a non-active tab',
+        () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['a.md', 'b.md'],
+        activeTabPath: 'a.md',
+      );
+      final next = state.withTabClosed('b.md');
+      expect(next.openTabs, ['a.md']);
+      expect(next.activeTabPath, 'a.md');
+    });
+
+    test('withActiveTab is a no-op for an unknown path', () {
+      const state = WorkspaceState(
+        panelLayout: PanelLayoutState.defaults,
+        expandedFolders: <String>{},
+        treeRootMode: TreeRootMode.content,
+        openTabs: ['a.md'],
+        activeTabPath: 'a.md',
+      );
+      final next = state.withActiveTab('nope.md');
+      expect(next, state);
+    });
+  });
 }

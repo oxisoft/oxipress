@@ -91,28 +91,44 @@ class PanelLayoutState {
 }
 
 /// Per-project persisted workspace settings: panel layout, expanded folder
-/// paths in the tree, and which root the tree is showing.
+/// paths in the tree, which root the tree is showing, and the editor's
+/// open tabs (paths relative to the project root) plus which one is active.
 class WorkspaceState {
   const WorkspaceState({
     required this.panelLayout,
     required this.expandedFolders,
     required this.treeRootMode,
+    this.openTabs = const <String>[],
+    this.activeTabPath,
   });
 
   final PanelLayoutState panelLayout;
   final Set<String> expandedFolders;
   final TreeRootMode treeRootMode;
 
+  /// Editor tabs in order, as paths **relative** to the project root.
+  /// Storing relative paths means the state survives moving / renaming the
+  /// project's parent directory.
+  final List<String> openTabs;
+
+  /// Currently-active tab path (relative to project root), or null when
+  /// nothing is open.
+  final String? activeTabPath;
+
   static const WorkspaceState defaults = WorkspaceState(
     panelLayout: PanelLayoutState.defaults,
     expandedFolders: <String>{},
     treeRootMode: TreeRootMode.content,
+    openTabs: <String>[],
+    activeTabPath: null,
   );
 
   Map<String, Object?> toJson() => {
         'panelLayout': panelLayout.toJson(),
         'expandedFolders': expandedFolders.toList()..sort(),
         'treeRootMode': treeRootMode.name,
+        'openTabs': openTabs,
+        if (activeTabPath != null) 'activeTabPath': activeTabPath,
       };
 
   static WorkspaceState fromJson(Map<String, Object?> json) {
@@ -129,6 +145,10 @@ class WorkspaceState {
         (t) => t.name == (json['treeRootMode'] as String?),
         orElse: () => TreeRootMode.content,
       ),
+      openTabs: (json['openTabs'] as List<dynamic>? ?? const [])
+          .cast<String>()
+          .toList(growable: false),
+      activeTabPath: json['activeTabPath'] as String?,
     );
   }
 
@@ -136,11 +156,18 @@ class WorkspaceState {
     PanelLayoutState? panelLayout,
     Set<String>? expandedFolders,
     TreeRootMode? treeRootMode,
+    List<String>? openTabs,
+    String? activeTabPath,
+    bool clearActiveTab = false,
   }) =>
       WorkspaceState(
         panelLayout: panelLayout ?? this.panelLayout,
         expandedFolders: expandedFolders ?? this.expandedFolders,
         treeRootMode: treeRootMode ?? this.treeRootMode,
+        openTabs: openTabs ?? this.openTabs,
+        activeTabPath: clearActiveTab
+            ? null
+            : (activeTabPath ?? this.activeTabPath),
       );
 
   WorkspaceState withFolderExpanded(String path, bool expanded) {
@@ -153,25 +180,64 @@ class WorkspaceState {
     return copyWith(expandedFolders: next);
   }
 
+  WorkspaceState withTabOpened(String relativePath) {
+    final next = openTabs.contains(relativePath)
+        ? openTabs
+        : [...openTabs, relativePath];
+    return copyWith(openTabs: next, activeTabPath: relativePath);
+  }
+
+  WorkspaceState withTabClosed(String relativePath) {
+    if (!openTabs.contains(relativePath)) return this;
+    final remaining =
+        openTabs.where((t) => t != relativePath).toList(growable: false);
+    if (activeTabPath == relativePath) {
+      final newActive = remaining.isEmpty ? null : remaining.last;
+      return copyWith(
+        openTabs: remaining,
+        activeTabPath: newActive,
+        clearActiveTab: newActive == null,
+      );
+    }
+    return copyWith(openTabs: remaining);
+  }
+
+  WorkspaceState withActiveTab(String relativePath) {
+    if (!openTabs.contains(relativePath)) return this;
+    return copyWith(activeTabPath: relativePath);
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is WorkspaceState &&
           other.panelLayout == panelLayout &&
           _setEquals(other.expandedFolders, expandedFolders) &&
-          other.treeRootMode == treeRootMode);
+          other.treeRootMode == treeRootMode &&
+          _listEquals(other.openTabs, openTabs) &&
+          other.activeTabPath == activeTabPath);
 
   @override
   int get hashCode => Object.hash(
         panelLayout,
         Object.hashAllUnordered(expandedFolders),
         treeRootMode,
+        Object.hashAll(openTabs),
+        activeTabPath,
       );
 
   static bool _setEquals(Set<String> a, Set<String> b) {
     if (a.length != b.length) return false;
     for (final v in a) {
       if (!b.contains(v)) return false;
+    }
+    return true;
+  }
+
+  static bool _listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
     }
     return true;
   }

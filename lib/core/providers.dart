@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'file_system.dart';
 import 'file_watcher.dart';
+import 'os_opener.dart';
 import 'process_runner.dart';
 import 'storage.dart';
 
@@ -29,4 +30,8 @@ final fileSystemProvider = Provider<FileSystem>(
 
 final fileWatcherProvider = Provider<FileWatcher>(
   (ref) => const WatcherFileWatcher(),
+);
+
+final osOpenerProvider = Provider<OsOpener>(
+  (ref) => RealOsOpener(processRunner: ref.watch(processRunnerProvider)),
 );

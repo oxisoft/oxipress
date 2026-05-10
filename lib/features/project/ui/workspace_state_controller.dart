@@ -82,6 +82,33 @@ class WorkspaceStateController extends AsyncNotifier<WorkspaceState> {
     _scheduleSave(next);
   }
 
+  Future<void> openTab(String relativePath) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = current.withTabOpened(relativePath);
+    if (next == current) return;
+    state = AsyncValue.data(next);
+    _scheduleSave(next);
+  }
+
+  Future<void> closeTab(String relativePath) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = current.withTabClosed(relativePath);
+    if (next == current) return;
+    state = AsyncValue.data(next);
+    _scheduleSave(next);
+  }
+
+  Future<void> setActiveTab(String relativePath) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = current.withActiveTab(relativePath);
+    if (next == current) return;
+    state = AsyncValue.data(next);
+    _scheduleSave(next);
+  }
+
   void _scheduleSave(WorkspaceState pending) {
     _saveTimer?.cancel();
     _saveTimer = Timer(const Duration(milliseconds: 250), () {

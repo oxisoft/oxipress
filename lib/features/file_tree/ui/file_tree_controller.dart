@@ -51,12 +51,19 @@ class FileTreeController extends AsyncNotifier<FileTreeView> {
 
     _attachWatcher(rootPath);
 
-    final previousSelection = state.value?.selectedPath;
+    // Tree selection is derived from the active editor tab. Whenever a
+    // different tab becomes active (via the editor tab bar, the file tree
+    // itself, or persistence restore), the tree highlight follows.
+    final activeRelative = workspace.activeTabPath;
+    final selectedAbsolute = activeRelative == null
+        ? null
+        : p.join(lifecycle.project.path, activeRelative);
+
     return FileTreeView(
       rootPath: rootPath,
       children: children,
       expandedFolders: workspace.expandedFolders,
-      selectedPath: previousSelection,
+      selectedPath: selectedAbsolute,
     );
   }
 

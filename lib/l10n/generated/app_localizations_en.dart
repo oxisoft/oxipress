@@ -81,6 +81,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editorPlaceholder => 'Open a markdown file from the tree.';
 
   @override
+  String get editorEmptyBody => '(empty body)';
+
+  @override
+  String get editorModeRaw => 'Raw';
+
+  @override
+  String get editorModeRich => 'Rich';
+
+  @override
+  String get editorModeRichComingSoon => 'Rich-text mode arrives in Phase 9.';
+
+  @override
+  String get editorTabListTooltip => 'Show all open tabs';
+
+  @override
+  String get frontmatterEmpty => 'No frontmatter detected.';
+
+  @override
+  String frontmatterFormatLabel(String format) {
+    return 'Frontmatter · $format';
+  }
+
+  @override
   String get previewPlaceholder => 'Live preview becomes available in Phase 5.';
 
   @override

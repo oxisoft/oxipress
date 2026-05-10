@@ -232,6 +232,48 @@ abstract class AppLocalizations {
   /// **'Open a markdown file from the tree.'**
   String get editorPlaceholder;
 
+  /// No description provided for @editorEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'(empty body)'**
+  String get editorEmptyBody;
+
+  /// No description provided for @editorModeRaw.
+  ///
+  /// In en, this message translates to:
+  /// **'Raw'**
+  String get editorModeRaw;
+
+  /// No description provided for @editorModeRich.
+  ///
+  /// In en, this message translates to:
+  /// **'Rich'**
+  String get editorModeRich;
+
+  /// No description provided for @editorModeRichComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Rich-text mode arrives in Phase 9.'**
+  String get editorModeRichComingSoon;
+
+  /// No description provided for @editorTabListTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all open tabs'**
+  String get editorTabListTooltip;
+
+  /// No description provided for @frontmatterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No frontmatter detected.'**
+  String get frontmatterEmpty;
+
+  /// No description provided for @frontmatterFormatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Frontmatter · {format}'**
+  String frontmatterFormatLabel(String format);
+
   /// No description provided for @previewPlaceholder.
   ///
   /// In en, this message translates to:

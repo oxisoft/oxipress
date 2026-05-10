@@ -69,6 +69,24 @@
 
   "editorPlaceholder": "Open a markdown file from the tree.",
   "@editorPlaceholder": {},
+  "editorEmptyBody": "(empty body)",
+  "@editorEmptyBody": {},
+  "editorModeRaw": "Raw",
+  "@editorModeRaw": {},
+  "editorModeRich": "Rich",
+  "@editorModeRich": {},
+  "editorModeRichComingSoon": "Rich-text mode arrives in Phase 9.",
+  "@editorModeRichComingSoon": {},
+  "editorTabListTooltip": "Show all open tabs",
+  "@editorTabListTooltip": {},
+  "frontmatterEmpty": "No frontmatter detected.",
+  "@frontmatterEmpty": {},
+  "frontmatterFormatLabel": "Frontmatter · {format}",
+  "@frontmatterFormatLabel": {
+    "placeholders": {
+      "format": {"type": "String"}
+    }
+  },
   "previewPlaceholder": "Live preview becomes available in Phase 5.",
   "@previewPlaceholder": {},
 
