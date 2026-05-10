@@ -1,6 +1,7 @@
 # OxiPress
 
-[![CI](https://github.com/oxisoft/oxipress/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/oxisoft/oxipress/actions/workflows/ci.yml)
+[![Analyze](https://github.com/oxisoft/oxipress/actions/workflows/analyze.yml/badge.svg?branch=main)](https://github.com/oxisoft/oxipress/actions/workflows/analyze.yml)
+[![Test](https://github.com/oxisoft/oxipress/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/oxisoft/oxipress/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/oxisoft/oxipress/badge.svg?branch=main)](https://coveralls.io/github/oxisoft/oxipress?branch=main)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.41-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
