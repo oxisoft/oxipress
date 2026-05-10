@@ -21,6 +21,20 @@ Thanks for your interest. This file is a placeholder; full contribution guidelin
 
 Implementation follows the plan in `docs/phases-overview.md`. Each phase ends in a user-testable build with tests; PRs should target the current phase and not jump ahead.
 
+## Releases
+
+Releases are tag-driven and produced entirely by CI.
+
+1. Bump `version:` in `pubspec.yaml` (e.g. `1.0.0+1`) and `AppInfo.version` in `lib/app/app_info.dart`. Commit and push to `main`.
+2. Tag the same commit with the matching version prefixed by `v` and push the tag:
+   ```sh
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+3. The `Release` workflow verifies the tag matches `pubspec.yaml`, builds Linux / macOS / Windows release binaries on GitHub-hosted runners, and publishes a GitHub release with the artifacts attached.
+
+If the tag and pubspec versions disagree, the workflow fails before building. Pre-release tags (containing `-`, e.g. `v1.0.0-beta.1`) are published as GitHub pre-releases.
+
 ## Code style
 
 - `analysis_options.yaml` enforces strict casts/raw-types/inference and the curated lint set.

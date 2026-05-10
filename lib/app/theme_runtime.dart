@@ -29,4 +29,13 @@ class AppThemes {
       );
 }
 
-final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
+class ThemeModeController extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() => ThemeMode.system;
+
+  void set(ThemeMode mode) => state = mode;
+}
+
+final themeModeProvider = NotifierProvider<ThemeModeController, ThemeMode>(
+  ThemeModeController.new,
+);

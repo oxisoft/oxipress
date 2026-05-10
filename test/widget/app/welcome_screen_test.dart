@@ -20,7 +20,7 @@ void main() {
 
     testWidgets('shows the app version', (tester) async {
       await pumpAppWith(tester, const WelcomeScreen());
-      expect(find.textContaining('v0.0.1'), findsOneWidget);
+      expect(find.textContaining('v1.0.0'), findsOneWidget);
     });
   });
 }

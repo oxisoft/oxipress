@@ -1,5 +1,14 @@
 # OxiPress
 
+[![CI](https://github.com/oxisoft/oxipress/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/oxisoft/oxipress/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/oxisoft/oxipress/badge.svg?branch=main)](https://coveralls.io/github/oxisoft/oxipress?branch=main)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.41-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.11-0175C2?logo=dart&logoColor=white)](https://dart.dev)
+[![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-informational)](https://flutter.dev/desktop)
+[![Style](https://img.shields.io/badge/style-flutter__lints-4BC0F5?logo=flutter&logoColor=white)](https://pub.dev/packages/flutter_lints)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 Cross-platform desktop editor for Hugo sites: three-panel authoring (file tree, content editor, live preview), embedded terminal, basic git workflow, and a JSON-driven theming system.
 
 **Status:** Pre-alpha. Phase 0 (foundation) lands the empty app shell. See `docs/phases-overview.md` for the full delivery plan.

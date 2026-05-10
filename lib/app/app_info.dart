@@ -5,5 +5,5 @@ class AppInfo {
 
   static const String displayName = 'OxiPress';
   static const String bundleId = 'io.oxisoft.oxipress';
-  static const String version = '0.0.1';
+  static const String version = '1.0.0';
 }
