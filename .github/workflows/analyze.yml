@@ -13,13 +13,14 @@ concurrency:
 
 env:
   FLUTTER_VERSION: '3.41.9'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Linux desktop dependencies
         run: |

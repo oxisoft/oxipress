@@ -10,6 +10,7 @@ permissions:
 
 env:
   FLUTTER_VERSION: '3.41.9'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   verify-tag:
@@ -19,7 +20,7 @@ jobs:
       version: ${{ steps.check.outputs.version }}
       is_prerelease: ${{ steps.check.outputs.is_prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Compare tag with pubspec version
         id: check
@@ -59,7 +60,7 @@ jobs:
             artifact-name: oxipress-windows-x64
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Linux desktop dependencies
         if: matrix.target == 'linux'
@@ -109,7 +110,7 @@ jobs:
           $zip = "dist/${{ matrix.artifact-name }}-${{ needs.verify-tag.outputs.version }}.zip"
           Compress-Archive -Path $stage -DestinationPath $zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.artifact-name }}
           path: dist/*
@@ -120,9 +121,9 @@ jobs:
     needs: [verify-tag, build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           path: dist
           merge-multiple: true
