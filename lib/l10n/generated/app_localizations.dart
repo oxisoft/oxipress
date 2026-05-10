@@ -112,11 +112,179 @@ abstract class AppLocalizations {
   /// **'Open Project'**
   String get openProject;
 
-  /// Tooltip on the disabled Open Project button during Phase 0
+  /// Status while a project is being opened
   ///
   /// In en, this message translates to:
-  /// **'Project loading lands in Phase 1.'**
-  String get openProjectComingSoon;
+  /// **'Opening project…'**
+  String get openingProject;
+
+  /// Header for the recent projects list on welcome
+  ///
+  /// In en, this message translates to:
+  /// **'Recent projects'**
+  String get recentProjects;
+
+  /// Empty state under recent projects
+  ///
+  /// In en, this message translates to:
+  /// **'No recent projects yet.'**
+  String get noRecentProjects;
+
+  /// Documentation link label
+  ///
+  /// In en, this message translates to:
+  /// **'Documentation'**
+  String get documentation;
+
+  /// Snackbar shown when the documentation link is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Documentation site is not yet published.'**
+  String get documentationComingSoon;
+
+  /// Tooltip on the remove icon next to a recent entry
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from recents'**
+  String get removeFromRecents;
+
+  /// No description provided for @errorPathDoesNotExist.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected folder does not exist.'**
+  String get errorPathDoesNotExist;
+
+  /// No description provided for @errorMissingContentDirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected folder is not a Hugo site (missing content/ directory).'**
+  String get errorMissingContentDirectory;
+
+  /// No description provided for @errorMissingHugoConfig.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected folder is not a Hugo site (no hugo.toml/yaml/json or legacy config.* found).'**
+  String get errorMissingHugoConfig;
+
+  /// No description provided for @errorNotADirectory.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected path is not a folder.'**
+  String get errorNotADirectory;
+
+  /// No description provided for @panelTitleFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get panelTitleFiles;
+
+  /// No description provided for @panelTitleEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Editor'**
+  String get panelTitleEditor;
+
+  /// No description provided for @panelTitlePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get panelTitlePreview;
+
+  /// No description provided for @collapsePanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse panel'**
+  String get collapsePanel;
+
+  /// No description provided for @expandPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand panel'**
+  String get expandPanel;
+
+  /// No description provided for @treeRootContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Show content folder'**
+  String get treeRootContent;
+
+  /// No description provided for @treeRootProjectRoot.
+  ///
+  /// In en, this message translates to:
+  /// **'Show project root'**
+  String get treeRootProjectRoot;
+
+  /// No description provided for @treeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This directory is empty.'**
+  String get treeEmpty;
+
+  /// No description provided for @treeNoProject.
+  ///
+  /// In en, this message translates to:
+  /// **'No project open.'**
+  String get treeNoProject;
+
+  /// No description provided for @editorPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open a markdown file from the tree.'**
+  String get editorPlaceholder;
+
+  /// No description provided for @previewPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview becomes available in Phase 5.'**
+  String get previewPlaceholder;
+
+  /// No description provided for @toolbarSaveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Save (lands in Phase 3)'**
+  String get toolbarSaveTooltip;
+
+  /// No description provided for @toolbarSettingsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings (lands in Phase 10)'**
+  String get toolbarSettingsTooltip;
+
+  /// No description provided for @toolbarCloseProject.
+  ///
+  /// In en, this message translates to:
+  /// **'Close project'**
+  String get toolbarCloseProject;
+
+  /// No description provided for @toolbarHugoStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo: stopped'**
+  String get toolbarHugoStopped;
+
+  /// No description provided for @toolbarBranchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'branch —'**
+  String get toolbarBranchPlaceholder;
+
+  /// No description provided for @statusBarReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get statusBarReady;
+
+  /// No description provided for @statusBarCursorPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Ln —, Col —'**
+  String get statusBarCursorPlaceholder;
+
+  /// No description provided for @statusBarLastSavedPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Last saved: —'**
+  String get statusBarLastSavedPlaceholder;
 }
 
 class _AppLocalizationsDelegate

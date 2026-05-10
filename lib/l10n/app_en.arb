@@ -4,6 +4,7 @@
   "@appName": {
     "description": "Application name"
   },
+
   "welcomeTagline": "Edit Hugo sites with live preview.",
   "@welcomeTagline": {
     "description": "Tagline shown on the welcome screen"
@@ -12,8 +13,80 @@
   "@openProject": {
     "description": "Open Project button on welcome screen"
   },
-  "openProjectComingSoon": "Project loading lands in Phase 1.",
-  "@openProjectComingSoon": {
-    "description": "Tooltip on the disabled Open Project button during Phase 0"
-  }
+  "openingProject": "Opening project…",
+  "@openingProject": {
+    "description": "Status while a project is being opened"
+  },
+  "recentProjects": "Recent projects",
+  "@recentProjects": {
+    "description": "Header for the recent projects list on welcome"
+  },
+  "noRecentProjects": "No recent projects yet.",
+  "@noRecentProjects": {
+    "description": "Empty state under recent projects"
+  },
+  "documentation": "Documentation",
+  "@documentation": {
+    "description": "Documentation link label"
+  },
+  "documentationComingSoon": "Documentation site is not yet published.",
+  "@documentationComingSoon": {
+    "description": "Snackbar shown when the documentation link is tapped"
+  },
+  "removeFromRecents": "Remove from recents",
+  "@removeFromRecents": {
+    "description": "Tooltip on the remove icon next to a recent entry"
+  },
+
+  "errorPathDoesNotExist": "The selected folder does not exist.",
+  "@errorPathDoesNotExist": {},
+  "errorMissingContentDirectory": "The selected folder is not a Hugo site (missing content/ directory).",
+  "@errorMissingContentDirectory": {},
+  "errorMissingHugoConfig": "The selected folder is not a Hugo site (no hugo.toml/yaml/json or legacy config.* found).",
+  "@errorMissingHugoConfig": {},
+  "errorNotADirectory": "The selected path is not a folder.",
+  "@errorNotADirectory": {},
+
+  "panelTitleFiles": "Files",
+  "@panelTitleFiles": {},
+  "panelTitleEditor": "Editor",
+  "@panelTitleEditor": {},
+  "panelTitlePreview": "Preview",
+  "@panelTitlePreview": {},
+  "collapsePanel": "Collapse panel",
+  "@collapsePanel": {},
+  "expandPanel": "Expand panel",
+  "@expandPanel": {},
+
+  "treeRootContent": "Show content folder",
+  "@treeRootContent": {},
+  "treeRootProjectRoot": "Show project root",
+  "@treeRootProjectRoot": {},
+  "treeEmpty": "This directory is empty.",
+  "@treeEmpty": {},
+  "treeNoProject": "No project open.",
+  "@treeNoProject": {},
+
+  "editorPlaceholder": "Open a markdown file from the tree.",
+  "@editorPlaceholder": {},
+  "previewPlaceholder": "Live preview becomes available in Phase 5.",
+  "@previewPlaceholder": {},
+
+  "toolbarSaveTooltip": "Save (lands in Phase 3)",
+  "@toolbarSaveTooltip": {},
+  "toolbarSettingsTooltip": "Settings (lands in Phase 10)",
+  "@toolbarSettingsTooltip": {},
+  "toolbarCloseProject": "Close project",
+  "@toolbarCloseProject": {},
+  "toolbarHugoStopped": "Hugo: stopped",
+  "@toolbarHugoStopped": {},
+  "toolbarBranchPlaceholder": "branch —",
+  "@toolbarBranchPlaceholder": {},
+
+  "statusBarReady": "Ready",
+  "@statusBarReady": {},
+  "statusBarCursorPlaceholder": "Ln —, Col —",
+  "@statusBarCursorPlaceholder": {},
+  "statusBarLastSavedPlaceholder": "Last saved: —",
+  "@statusBarLastSavedPlaceholder": {}
 }

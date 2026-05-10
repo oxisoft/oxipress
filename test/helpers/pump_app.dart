@@ -6,18 +6,21 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:oxipress/l10n/generated/app_localizations.dart';
 
-/// Wraps [child] in a [MaterialApp] with l10n delegates and a [ProviderScope].
-/// Use in widget tests so the tested widget gets the same surrounding chrome
-/// as the real app without booting `main()`.
-Future<void> pumpAppWith(
+/// Wraps [child] in an [UncontrolledProviderScope] over a fresh
+/// [ProviderContainer] plus a [MaterialApp] with l10n delegates. Returns the
+/// container so tests can drive controllers (e.g. open a project) and read
+/// state directly.
+Future<ProviderContainer> pumpAppWith(
   WidgetTester tester,
   Widget child, {
   List<Override> overrides = const [],
   Locale locale = const Locale('en'),
 }) async {
+  final container = ProviderContainer(overrides: overrides);
+  addTearDown(container.dispose);
   await tester.pumpWidget(
-    ProviderScope(
-      overrides: overrides,
+    UncontrolledProviderScope(
+      container: container,
       child: MaterialApp(
         locale: locale,
         localizationsDelegates: const [
@@ -32,4 +35,5 @@ Future<void> pumpAppWith(
     ),
   );
   await tester.pumpAndSettle();
+  return container;
 }

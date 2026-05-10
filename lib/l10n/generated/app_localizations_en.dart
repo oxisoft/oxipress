@@ -18,5 +18,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openProject => 'Open Project';
 
   @override
-  String get openProjectComingSoon => 'Project loading lands in Phase 1.';
+  String get openingProject => 'Opening project…';
+
+  @override
+  String get recentProjects => 'Recent projects';
+
+  @override
+  String get noRecentProjects => 'No recent projects yet.';
+
+  @override
+  String get documentation => 'Documentation';
+
+  @override
+  String get documentationComingSoon =>
+      'Documentation site is not yet published.';
+
+  @override
+  String get removeFromRecents => 'Remove from recents';
+
+  @override
+  String get errorPathDoesNotExist => 'The selected folder does not exist.';
+
+  @override
+  String get errorMissingContentDirectory =>
+      'The selected folder is not a Hugo site (missing content/ directory).';
+
+  @override
+  String get errorMissingHugoConfig =>
+      'The selected folder is not a Hugo site (no hugo.toml/yaml/json or legacy config.* found).';
+
+  @override
+  String get errorNotADirectory => 'The selected path is not a folder.';
+
+  @override
+  String get panelTitleFiles => 'Files';
+
+  @override
+  String get panelTitleEditor => 'Editor';
+
+  @override
+  String get panelTitlePreview => 'Preview';
+
+  @override
+  String get collapsePanel => 'Collapse panel';
+
+  @override
+  String get expandPanel => 'Expand panel';
+
+  @override
+  String get treeRootContent => 'Show content folder';
+
+  @override
+  String get treeRootProjectRoot => 'Show project root';
+
+  @override
+  String get treeEmpty => 'This directory is empty.';
+
+  @override
+  String get treeNoProject => 'No project open.';
+
+  @override
+  String get editorPlaceholder => 'Open a markdown file from the tree.';
+
+  @override
+  String get previewPlaceholder => 'Live preview becomes available in Phase 5.';
+
+  @override
+  String get toolbarSaveTooltip => 'Save (lands in Phase 3)';
+
+  @override
+  String get toolbarSettingsTooltip => 'Settings (lands in Phase 10)';
+
+  @override
+  String get toolbarCloseProject => 'Close project';
+
+  @override
+  String get toolbarHugoStopped => 'Hugo: stopped';
+
+  @override
+  String get toolbarBranchPlaceholder => 'branch —';
+
+  @override
+  String get statusBarReady => 'Ready';
+
+  @override
+  String get statusBarCursorPlaceholder => 'Ln —, Col —';
+
+  @override
+  String get statusBarLastSavedPlaceholder => 'Last saved: —';
 }

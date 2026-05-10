@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ .Title }} — {{ .Site.Title }}</title>
+  </head>
+  <body>
+    <header><a href="{{ "/" | relURL }}">{{ .Site.Title }}</a></header>
+    <main>
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+      <ul>
+        {{ range .Pages }}
+          <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+        {{ end }}
+      </ul>
+    </main>
+  </body>
+</html>

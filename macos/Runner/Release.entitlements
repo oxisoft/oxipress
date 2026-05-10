@@ -2,7 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!--
+	  See DebugProfile.entitlements for the rationale: OxiPress runs
+	  unsandboxed because it must write into arbitrary user project
+	  folders and spawn external tooling (hugo, git, shell). The
+	  user-selected entitlement is kept so file_picker's pre-flight
+	  check passes.
+	-->
 	<key>com.apple.security.app-sandbox</key>
+	<false/>
+	<key>com.apple.security.network.server</key>
+	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 </dict>
 </plist>

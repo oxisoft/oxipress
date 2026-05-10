@@ -1,0 +1,9 @@
+baseURL = 'http://localhost/'
+languageCode = 'en-us'
+title = 'OxiPress Sample Site'
+
+[params]
+description = 'Minimal Hugo site fixture used by OxiPress tests.'
+
+[markup.goldmark.renderer]
+unsafe = true
