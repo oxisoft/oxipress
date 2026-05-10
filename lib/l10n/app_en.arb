@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appName": "OxiPress",
+  "@appName": {
+    "description": "Application name"
+  },
+  "welcomeTagline": "Edit Hugo sites with live preview.",
+  "@welcomeTagline": {
+    "description": "Tagline shown on the welcome screen"
+  },
+  "openProject": "Open Project",
+  "@openProject": {
+    "description": "Open Project button on welcome screen"
+  },
+  "openProjectComingSoon": "Project loading lands in Phase 1.",
+  "@openProjectComingSoon": {
+    "description": "Tooltip on the disabled Open Project button during Phase 0"
+  }
+}
