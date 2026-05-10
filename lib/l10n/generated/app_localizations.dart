@@ -262,6 +262,138 @@ abstract class AppLocalizations {
   /// **'Show all open tabs'**
   String get editorTabListTooltip;
 
+  /// No description provided for @externalChangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'File changed on disk'**
+  String get externalChangeTitle;
+
+  /// No description provided for @externalChangeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{path} changed externally while you have unsaved edits. What do you want to do?'**
+  String externalChangeBody(String path);
+
+  /// No description provided for @externalChangeKeepMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my changes'**
+  String get externalChangeKeepMine;
+
+  /// No description provided for @externalChangeReloadDisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload from disk (lose changes)'**
+  String get externalChangeReloadDisk;
+
+  /// No description provided for @findReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find / Replace'**
+  String get findReplaceTitle;
+
+  /// No description provided for @findHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Find'**
+  String get findHint;
+
+  /// No description provided for @replaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get replaceHint;
+
+  /// No description provided for @findCaseSensitive.
+  ///
+  /// In en, this message translates to:
+  /// **'Case sensitive'**
+  String get findCaseSensitive;
+
+  /// No description provided for @findWholeWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole word'**
+  String get findWholeWord;
+
+  /// No description provided for @findRegex.
+  ///
+  /// In en, this message translates to:
+  /// **'Regex'**
+  String get findRegex;
+
+  /// No description provided for @findPrev.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous match'**
+  String get findPrev;
+
+  /// No description provided for @findNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next match'**
+  String get findNext;
+
+  /// No description provided for @findReplaceOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get findReplaceOne;
+
+  /// No description provided for @findReplaceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace all'**
+  String get findReplaceAll;
+
+  /// No description provided for @findClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close find/replace'**
+  String get findClose;
+
+  /// No description provided for @findMatchCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String findMatchCount(int current, int total);
+
+  /// No description provided for @findNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches'**
+  String get findNoMatches;
+
+  /// No description provided for @closeTabUnsavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes before closing?'**
+  String get closeTabUnsavedTitle;
+
+  /// No description provided for @closeTabUnsavedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{basename} has unsaved changes.'**
+  String closeTabUnsavedBody(String basename);
+
+  /// No description provided for @closeTabSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get closeTabSave;
+
+  /// No description provided for @closeTabDontSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t save'**
+  String get closeTabDontSave;
+
+  /// No description provided for @closeTabCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get closeTabCancel;
+
   /// No description provided for @frontmatterEmpty.
   ///
   /// In en, this message translates to:
@@ -274,6 +406,24 @@ abstract class AppLocalizations {
   /// **'Frontmatter · {format}'**
   String frontmatterFormatLabel(String format);
 
+  /// No description provided for @frontmatterSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Frontmatter'**
+  String get frontmatterSectionTitle;
+
+  /// No description provided for @frontmatterExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand frontmatter'**
+  String get frontmatterExpand;
+
+  /// No description provided for @frontmatterCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse frontmatter'**
+  String get frontmatterCollapse;
+
   /// No description provided for @previewPlaceholder.
   ///
   /// In en, this message translates to:
@@ -283,8 +433,14 @@ abstract class AppLocalizations {
   /// No description provided for @toolbarSaveTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Save (lands in Phase 3)'**
+  /// **'Save (Ctrl/Cmd+S)'**
   String get toolbarSaveTooltip;
+
+  /// No description provided for @toolbarSaveDisabledTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'No unsaved changes'**
+  String get toolbarSaveDisabledTooltip;
 
   /// No description provided for @toolbarSettingsTooltip.
   ///

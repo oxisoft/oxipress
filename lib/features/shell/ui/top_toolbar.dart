@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart' as p;
 
 import '../../../l10n/generated/app_localizations.dart';
+import '../../editor/data/editor_buffers_controller.dart';
 import '../../project/ui/project_controller.dart';
+import '../../project/ui/workspace_state_controller.dart';
 
 class TopToolbar extends ConsumerWidget {
   const TopToolbar({super.key});
@@ -16,6 +19,15 @@ class TopToolbar extends ConsumerWidget {
       OpenProject(:final project) => project.name,
       _ => '—',
     };
+
+    final activeAbsolute = _resolveActivePath(ref, lifecycle);
+    final isDirty = ref.watch(
+      editorBuffersProvider.select(
+        (m) => activeAbsolute != null
+            ? m[activeAbsolute]?.isDirty ?? false
+            : false,
+      ),
+    );
 
     return Container(
       height: 44,
@@ -39,9 +51,22 @@ class TopToolbar extends ConsumerWidget {
           _Pill(label: l10n.toolbarHugoStopped),
           const Spacer(),
           IconButton(
-            icon: const Icon(Icons.save_outlined, size: 20),
-            tooltip: l10n.toolbarSaveTooltip,
-            onPressed: null,
+            icon: Icon(
+              Icons.save_outlined,
+              size: 20,
+              color: isDirty ? theme.colorScheme.primary : null,
+            ),
+            tooltip: isDirty
+                ? l10n.toolbarSaveTooltip
+                : l10n.toolbarSaveDisabledTooltip,
+            onPressed: isDirty && activeAbsolute != null
+                ? () {
+                    // ignore: discarded_futures
+                    ref
+                        .read(editorBuffersProvider.notifier)
+                        .save(activeAbsolute);
+                  }
+                : null,
           ),
           if (lifecycle is OpenProject)
             IconButton(
@@ -58,6 +83,14 @@ class TopToolbar extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String? _resolveActivePath(WidgetRef ref, ProjectLifecycle lifecycle) {
+    if (lifecycle is! OpenProject) return null;
+    final workspace = ref.watch(workspaceStateProvider).value;
+    final relative = workspace?.activeTabPath;
+    if (relative == null) return null;
+    return p.join(lifecycle.project.path, relative);
   }
 }
 

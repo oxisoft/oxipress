@@ -1,15 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 
 import '../../../l10n/generated/app_localizations.dart';
 import '../../project/domain/workspace_state.dart';
+import '../../project/ui/project_controller.dart';
 import '../../project/ui/workspace_state_controller.dart';
+import '../data/editor_buffers_controller.dart';
+import 'close_tab_action.dart';
 
 /// Horizontal scrolling tab bar showing every open editor tab. The active
 /// tab is highlighted; clicking switches; the x button or middle-click
-/// closes. A pinned overflow button at the right opens a vertical popup
-/// listing every open tab so users don't have to scroll the row to find one.
+/// closes (with a save-prompt when the buffer is dirty). A pinned overflow
+/// button at the right opens a vertical popup listing every open tab.
 class EditorTabBar extends ConsumerWidget {
   const EditorTabBar({super.key});
 
@@ -92,18 +97,30 @@ class _TabListMenuButton extends ConsumerWidget {
   }
 }
 
-class _TabListEntry extends StatelessWidget {
+class _TabListEntry extends ConsumerWidget {
   const _TabListEntry({required this.path, required this.isActive});
 
   final String path;
   final bool isActive;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final fileName = p.basename(path);
     final dirPath = p.dirname(path);
     final showDir = dirPath.isNotEmpty && dirPath != '.';
+
+    final lifecycle = ref.watch(projectControllerProvider);
+    final absolute = lifecycle is OpenProject
+        ? p.join(lifecycle.project.path, path)
+        : null;
+    final isDirty = ref.watch(
+      editorBuffersProvider.select(
+        (m) => absolute != null
+            ? m[absolute]?.isDirty ?? false
+            : false,
+      ),
+    );
 
     final color = isActive
         ? theme.colorScheme.primary
@@ -123,7 +140,7 @@ class _TabListEntry extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                fileName,
+                isDirty ? '* $fileName' : fileName,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: color,
                   fontWeight:
@@ -174,67 +191,93 @@ class _TabButton extends ConsumerWidget {
         ? theme.colorScheme.onSurface
         : theme.colorScheme.onSurfaceVariant;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTertiaryTapDown: (_) => _close(ref),
-      child: Material(
-        color: color,
-        child: InkWell(
-          onTap: () =>
-              ref.read(workspaceStateProvider.notifier).setActiveTab(relativePath),
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 120),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              border: Border(
-                right: BorderSide(color: theme.colorScheme.outlineVariant),
-                bottom: BorderSide(
-                  color: isActive
-                      ? theme.colorScheme.primary
-                      : Colors.transparent,
-                  width: 2,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.article_outlined,
-                  size: 14,
-                  color: foreground,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  fileName,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: foreground,
-                    fontWeight:
-                        isActive ? FontWeight.w600 : FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                InkWell(
-                  onTap: () => _close(ref),
-                  borderRadius: BorderRadius.circular(10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: Icon(
-                      Icons.close,
-                      size: 14,
-                      color: foreground,
+    final lifecycle = ref.watch(projectControllerProvider);
+    final absolute = lifecycle is OpenProject
+        ? p.join(lifecycle.project.path, relativePath)
+        : null;
+    final isDirty = ref.watch(
+      editorBuffersProvider.select(
+        (m) => absolute != null
+            ? m[absolute]?.isDirty ?? false
+            : false,
+      ),
+    );
+
+    return Builder(
+      builder: (rowContext) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTertiaryTapDown: (_) => _close(rowContext, ref),
+          child: Material(
+            color: color,
+            child: InkWell(
+              onTap: () => ref
+                  .read(workspaceStateProvider.notifier)
+                  .setActiveTab(relativePath),
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 120),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: theme.colorScheme.outlineVariant,
+                    ),
+                    bottom: BorderSide(
+                      color: isActive
+                          ? theme.colorScheme.primary
+                          : Colors.transparent,
+                      width: 2,
                     ),
                   ),
                 ),
-              ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.article_outlined,
+                      size: 14,
+                      color: foreground,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      isDirty ? '* $fileName' : fileName,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: foreground,
+                        fontWeight: isActive
+                            ? FontWeight.w600
+                            : FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    InkWell(
+                      onTap: () => _close(rowContext, ref),
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Icon(
+                          Icons.close,
+                          size: 14,
+                          color: foreground,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  void _close(WidgetRef ref) {
-    ref.read(workspaceStateProvider.notifier).closeTab(relativePath);
+  void _close(BuildContext context, WidgetRef ref) {
+    unawaited(
+      closeTabWithConfirm(
+        context: context,
+        ref: ref,
+        relativePath: relativePath,
+      ),
+    );
   }
 }

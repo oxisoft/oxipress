@@ -4,6 +4,8 @@ import 'package:path/path.dart' as p;
 
 import '../../../core/providers.dart';
 import '../../../l10n/generated/app_localizations.dart';
+import '../../editor/data/editor_buffers_controller.dart';
+import '../../editor/domain/editor_buffer.dart';
 import '../../project/domain/workspace_state.dart';
 import '../../project/ui/project_controller.dart';
 import '../../project/ui/workspace_state_controller.dart';
@@ -189,7 +191,7 @@ class _TreeRow extends ConsumerWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  row.node.name,
+                  _buildLabel(ref),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -203,6 +205,17 @@ class _TreeRow extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _buildLabel(WidgetRef ref) {
+    if (row.node.isDirectory) return row.node.name;
+    final isDirty = ref.watch(
+      editorBuffersProvider.select<bool>(
+        (Map<String, EditorBuffer> m) =>
+            m[row.node.path]?.isDirty ?? false,
+      ),
+    );
+    return isDirty ? '* ${row.node.name}' : row.node.name;
   }
 
   void _onTap(WidgetRef ref) {

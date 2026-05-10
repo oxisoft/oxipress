@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../l10n/generated/app_localizations.dart';
 import '../../editor/ui/editor_panel.dart';
+import '../../editor/ui/external_change_prompt_host.dart';
 import '../../file_tree/ui/file_tree_panel.dart';
 import '../../shell/ui/status_bar.dart';
 import '../../shell/ui/three_panel_layout.dart';
@@ -16,11 +17,13 @@ class WorkspaceScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          const TopToolbar(),
-          Expanded(
-            child: ThreePanelLayout(
+          Column(
+            children: [
+              const TopToolbar(),
+              Expanded(
+                child: ThreePanelLayout(
               left: PanelDefinition(
                 title: l10n.panelTitleFiles,
                 actions: const [FileTreeRootToggle()],
@@ -36,7 +39,10 @@ class WorkspaceScreen extends StatelessWidget {
               ),
             ),
           ),
-          const BottomStatusBar(),
+              const BottomStatusBar(),
+            ],
+          ),
+          const ExternalChangePromptHost(),
         ],
       ),
       backgroundColor: theme.colorScheme.surface,

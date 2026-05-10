@@ -79,6 +79,63 @@
   "@editorModeRichComingSoon": {},
   "editorTabListTooltip": "Show all open tabs",
   "@editorTabListTooltip": {},
+  "externalChangeTitle": "File changed on disk",
+  "@externalChangeTitle": {},
+  "externalChangeBody": "{path} changed externally while you have unsaved edits. What do you want to do?",
+  "@externalChangeBody": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "externalChangeKeepMine": "Keep my changes",
+  "@externalChangeKeepMine": {},
+  "externalChangeReloadDisk": "Reload from disk (lose changes)",
+  "@externalChangeReloadDisk": {},
+  "findReplaceTitle": "Find / Replace",
+  "@findReplaceTitle": {},
+  "findHint": "Find",
+  "@findHint": {},
+  "replaceHint": "Replace",
+  "@replaceHint": {},
+  "findCaseSensitive": "Case sensitive",
+  "@findCaseSensitive": {},
+  "findWholeWord": "Whole word",
+  "@findWholeWord": {},
+  "findRegex": "Regex",
+  "@findRegex": {},
+  "findPrev": "Previous match",
+  "@findPrev": {},
+  "findNext": "Next match",
+  "@findNext": {},
+  "findReplaceOne": "Replace",
+  "@findReplaceOne": {},
+  "findReplaceAll": "Replace all",
+  "@findReplaceAll": {},
+  "findClose": "Close find/replace",
+  "@findClose": {},
+  "findMatchCount": "{current} of {total}",
+  "@findMatchCount": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "findNoMatches": "No matches",
+  "@findNoMatches": {},
+  "closeTabUnsavedTitle": "Save changes before closing?",
+  "@closeTabUnsavedTitle": {},
+  "closeTabUnsavedBody": "{basename} has unsaved changes.",
+  "@closeTabUnsavedBody": {
+    "placeholders": {
+      "basename": {"type": "String"}
+    }
+  },
+  "closeTabSave": "Save",
+  "@closeTabSave": {},
+  "closeTabDontSave": "Don't save",
+  "@closeTabDontSave": {},
+  "closeTabCancel": "Cancel",
+  "@closeTabCancel": {},
   "frontmatterEmpty": "No frontmatter detected.",
   "@frontmatterEmpty": {},
   "frontmatterFormatLabel": "Frontmatter · {format}",
@@ -87,11 +144,19 @@
       "format": {"type": "String"}
     }
   },
+  "frontmatterSectionTitle": "Frontmatter",
+  "@frontmatterSectionTitle": {},
+  "frontmatterExpand": "Expand frontmatter",
+  "@frontmatterExpand": {},
+  "frontmatterCollapse": "Collapse frontmatter",
+  "@frontmatterCollapse": {},
   "previewPlaceholder": "Live preview becomes available in Phase 5.",
   "@previewPlaceholder": {},
 
-  "toolbarSaveTooltip": "Save (lands in Phase 3)",
+  "toolbarSaveTooltip": "Save (Ctrl/Cmd+S)",
   "@toolbarSaveTooltip": {},
+  "toolbarSaveDisabledTooltip": "No unsaved changes",
+  "@toolbarSaveDisabledTooltip": {},
   "toolbarSettingsTooltip": "Settings (lands in Phase 10)",
   "@toolbarSettingsTooltip": {},
   "toolbarCloseProject": "Close project",

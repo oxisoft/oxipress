@@ -5,6 +5,7 @@ import 'package:oxipress/core/file_system.dart';
 import 'package:oxipress/core/file_watcher.dart';
 import 'package:oxipress/core/providers.dart';
 import 'package:oxipress/core/storage.dart';
+import 'package:oxipress/features/editor/data/frontmatter_visibility.dart';
 import 'package:oxipress/features/editor/ui/editor_panel.dart';
 import 'package:oxipress/features/project/ui/project_controller.dart';
 import 'package:oxipress/features/project/ui/workspace_state_controller.dart';
@@ -48,6 +49,12 @@ Future<ProviderContainer> _bootProject(WidgetTester tester) async {
   await container
       .read(projectControllerProvider.notifier)
       .openProject(_projectPath);
+  await tester.pumpAndSettle();
+  // Tests assert on frontmatter content; expand the section since it's
+  // collapsed by default in the production UI.
+  container
+      .read(frontmatterVisibilityProvider.notifier)
+      .setExpanded(expanded: true);
   await tester.pumpAndSettle();
   return container;
 }

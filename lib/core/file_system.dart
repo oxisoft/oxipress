@@ -47,6 +47,12 @@ abstract interface class FileSystem {
   Future<void> writeFileAsString(String path, String content);
   Future<void> createDirectory(String path, {bool recursive = false});
   Future<void> deleteFile(String path);
+  Future<void> renameFile(String fromPath, String toPath);
+
+  /// Writes [content] to a sibling temp file then renames it onto [path], so
+  /// concurrent readers (such as Hugo serve) never observe a half-written
+  /// file. Falls back to a direct write if the rename fails.
+  Future<void> writeFileAtomic(String path, String content);
 }
 
 class RealFileSystem implements FileSystem {
@@ -100,6 +106,36 @@ class RealFileSystem implements FileSystem {
     final file = io.File(path);
     if (file.existsSync()) {
       file.deleteSync();
+    }
+  }
+
+  @override
+  Future<void> renameFile(String fromPath, String toPath) async {
+    final src = io.File(fromPath);
+    if (!src.existsSync()) {
+      throw FileSystemException('Source file not found: $fromPath');
+    }
+    src.renameSync(toPath);
+  }
+
+  @override
+  Future<void> writeFileAtomic(String path, String content) async {
+    final tempPath = '$path.oxipress.tmp';
+    try {
+      io.File(tempPath).writeAsStringSync(content, flush: true);
+      io.File(tempPath).renameSync(path);
+    } on io.FileSystemException catch (e) {
+      // If atomic rename failed (e.g. cross-device), fall back to direct
+      // write so the user doesn't lose their save.
+      try {
+        io.File(tempPath).deleteSync();
+      } on io.FileSystemException catch (_) {
+        // best-effort cleanup
+      }
+      io.File(path).writeAsStringSync(content, flush: true);
+      throw FileSystemException(
+        'Atomic write fell back to direct write: ${e.message}',
+      );
     }
   }
 }
@@ -214,6 +250,21 @@ class InMemoryFileSystem implements FileSystem {
   @override
   Future<void> deleteFile(String path) async {
     removeEntry(path);
+  }
+
+  @override
+  Future<void> renameFile(String fromPath, String toPath) async {
+    final src = _entries[p.normalize(fromPath)];
+    if (src == null || !src.isFile) {
+      throw FileSystemException('Source file not found: $fromPath');
+    }
+    _entries.remove(p.normalize(fromPath));
+    addFile(toPath, content: src.content ?? '');
+  }
+
+  @override
+  Future<void> writeFileAtomic(String path, String content) async {
+    addFile(path, content: content);
   }
 }
 

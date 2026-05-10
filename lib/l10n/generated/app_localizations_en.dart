@@ -96,6 +96,78 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editorTabListTooltip => 'Show all open tabs';
 
   @override
+  String get externalChangeTitle => 'File changed on disk';
+
+  @override
+  String externalChangeBody(String path) {
+    return '$path changed externally while you have unsaved edits. What do you want to do?';
+  }
+
+  @override
+  String get externalChangeKeepMine => 'Keep my changes';
+
+  @override
+  String get externalChangeReloadDisk => 'Reload from disk (lose changes)';
+
+  @override
+  String get findReplaceTitle => 'Find / Replace';
+
+  @override
+  String get findHint => 'Find';
+
+  @override
+  String get replaceHint => 'Replace';
+
+  @override
+  String get findCaseSensitive => 'Case sensitive';
+
+  @override
+  String get findWholeWord => 'Whole word';
+
+  @override
+  String get findRegex => 'Regex';
+
+  @override
+  String get findPrev => 'Previous match';
+
+  @override
+  String get findNext => 'Next match';
+
+  @override
+  String get findReplaceOne => 'Replace';
+
+  @override
+  String get findReplaceAll => 'Replace all';
+
+  @override
+  String get findClose => 'Close find/replace';
+
+  @override
+  String findMatchCount(int current, int total) {
+    return '$current of $total';
+  }
+
+  @override
+  String get findNoMatches => 'No matches';
+
+  @override
+  String get closeTabUnsavedTitle => 'Save changes before closing?';
+
+  @override
+  String closeTabUnsavedBody(String basename) {
+    return '$basename has unsaved changes.';
+  }
+
+  @override
+  String get closeTabSave => 'Save';
+
+  @override
+  String get closeTabDontSave => 'Don\'t save';
+
+  @override
+  String get closeTabCancel => 'Cancel';
+
+  @override
   String get frontmatterEmpty => 'No frontmatter detected.';
 
   @override
@@ -104,10 +176,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get frontmatterSectionTitle => 'Frontmatter';
+
+  @override
+  String get frontmatterExpand => 'Expand frontmatter';
+
+  @override
+  String get frontmatterCollapse => 'Collapse frontmatter';
+
+  @override
   String get previewPlaceholder => 'Live preview becomes available in Phase 5.';
 
   @override
-  String get toolbarSaveTooltip => 'Save (lands in Phase 3)';
+  String get toolbarSaveTooltip => 'Save (Ctrl/Cmd+S)';
+
+  @override
+  String get toolbarSaveDisabledTooltip => 'No unsaved changes';
 
   @override
   String get toolbarSettingsTooltip => 'Settings (lands in Phase 10)';
