@@ -64,13 +64,15 @@ String resolveConfigDirPath({
   required String appName,
 }) {
   if (operatingSystem == 'linux') {
+    // Always join with POSIX separators — the result represents a Linux path
+    // regardless of the host OS executing this resolver.
     final xdg = environment['XDG_CONFIG_HOME'];
     if (xdg != null && xdg.isNotEmpty) {
-      return p.join(xdg, appName);
+      return p.posix.join(xdg, appName);
     }
     final home = environment['HOME'];
     if (home != null && home.isNotEmpty) {
-      return p.join(home, '.config', appName);
+      return p.posix.join(home, '.config', appName);
     }
   }
   return fallbackAppSupport;
