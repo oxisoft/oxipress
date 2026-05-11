@@ -78,6 +78,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String get treeNoProject => 'No project open.';
 
   @override
+  String get treeMenuNewFile => 'New file…';
+
+  @override
+  String get treeMenuNewFolder => 'New folder…';
+
+  @override
+  String get treeMenuOpen => 'Open';
+
+  @override
+  String get treeMenuRename => 'Rename…';
+
+  @override
+  String get treeMenuDuplicate => 'Duplicate';
+
+  @override
+  String get treeMenuDelete => 'Delete…';
+
+  @override
+  String get treeMenuReveal => 'Reveal in file manager';
+
+  @override
+  String get treeMenuWriteRestricted =>
+      'Read-only outside content/, static/, assets/, data/, layouts/';
+
+  @override
+  String get newFileDialogTitle => 'New file';
+
+  @override
+  String get newFolderDialogTitle => 'New folder';
+
+  @override
+  String get newFileNameHint => 'Filename (e.g. my-post.md)';
+
+  @override
+  String get newFolderNameHint => 'Folder name';
+
+  @override
+  String get newFileUseTemplate => 'Insert Hugo frontmatter template';
+
+  @override
+  String get renameDialogTitle => 'Rename';
+
+  @override
+  String get renameDialogHint => 'New name';
+
+  @override
+  String get deleteConfirmTitle => 'Delete?';
+
+  @override
+  String deleteConfirmFile(String name) {
+    return 'Delete $name? This can\'t be undone.';
+  }
+
+  @override
+  String deleteConfirmFolder(String name) {
+    return 'Delete folder $name and everything in it? This can\'t be undone.';
+  }
+
+  @override
+  String get dialogCreate => 'Create';
+
+  @override
+  String get dialogRename => 'Rename';
+
+  @override
+  String get dialogDelete => 'Delete';
+
+  @override
+  String get dialogCancel => 'Cancel';
+
+  @override
+  String get mutationErrorAlreadyExists =>
+      'A file or folder with that name already exists here.';
+
+  @override
+  String get mutationErrorInvalidName => 'That name isn\'t allowed.';
+
+  @override
+  String get mutationErrorNotFound => 'The file or folder no longer exists.';
+
+  @override
+  String mutationErrorGeneric(String detail) {
+    return 'Operation failed: $detail';
+  }
+
+  @override
   String get editorPlaceholder => 'Open a markdown file from the tree.';
 
   @override
@@ -201,6 +287,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toolbarHugoStopped => 'Hugo: stopped';
+
+  @override
+  String get hugoStatusStopped => 'Hugo: stopped';
+
+  @override
+  String get hugoStatusStarting => 'Hugo: starting…';
+
+  @override
+  String hugoStatusRunning(int port) {
+    return 'Hugo: :$port';
+  }
+
+  @override
+  String get hugoStatusError => 'Hugo: error';
+
+  @override
+  String get hugoActionStart => 'Start Hugo serve';
+
+  @override
+  String get hugoActionStop => 'Stop Hugo serve';
+
+  @override
+  String get hugoActionRestart => 'Restart Hugo serve';
+
+  @override
+  String get previewAddressBar => 'Address';
+
+  @override
+  String get previewActionBack => 'Back';
+
+  @override
+  String get previewActionForward => 'Forward';
+
+  @override
+  String get previewActionReload => 'Reload';
+
+  @override
+  String get previewActionOpenInBrowser => 'Open in browser';
+
+  @override
+  String get previewWaitingForHugo => 'Waiting for Hugo to start…';
+
+  @override
+  String get previewHugoNotRunning =>
+      'Hugo isn\'t running yet. Start it from the toolbar.';
+
+  @override
+  String get previewHugoError =>
+      'Hugo encountered an error. See logs and toolbar status.';
+
+  @override
+  String get previewWebviewUnavailable =>
+      'Embedded preview is available on macOS for now; use Open in browser on other platforms.';
 
   @override
   String get toolbarBranchPlaceholder => 'branch —';

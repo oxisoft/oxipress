@@ -109,6 +109,35 @@ class WorkspaceStateController extends AsyncNotifier<WorkspaceState> {
     _scheduleSave(next);
   }
 
+  /// Bulk-replace the open tab list + active-tab path. Used after a rename
+  /// or folder rename that affects multiple tabs at once.
+  Future<void> replaceTabs({
+    required List<String> openTabs,
+    required String? activeTabPath,
+  }) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = current.copyWith(
+      openTabs: openTabs,
+      activeTabPath: activeTabPath,
+      clearActiveTab: activeTabPath == null,
+    );
+    if (next == current) return;
+    state = AsyncValue.data(next);
+    _scheduleSave(next);
+  }
+
+  /// Replace the expanded-folders set wholesale (used after a folder
+  /// rename so persisted expanded paths point at the new path).
+  Future<void> replaceExpandedFolders(Set<String> expandedFolders) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = current.copyWith(expandedFolders: expandedFolders);
+    if (next == current) return;
+    state = AsyncValue.data(next);
+    _scheduleSave(next);
+  }
+
   void _scheduleSave(WorkspaceState pending) {
     _saveTimer?.cancel();
     _saveTimer = Timer(const Duration(milliseconds: 250), () {

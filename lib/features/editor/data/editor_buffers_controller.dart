@@ -174,6 +174,26 @@ class EditorBuffersController
     final next = Map<String, EditorBuffer>.of(state)..remove(absolutePath);
     state = next;
   }
+
+  /// Moves a buffer to a new absolute path key (used after a rename). No-op
+  /// if there's no buffer at the old key.
+  void rekey(String oldAbsolutePath, String newAbsolutePath) {
+    final existing = state[oldAbsolutePath];
+    if (existing == null) return;
+    if (oldAbsolutePath == newAbsolutePath) return;
+    final next = Map<String, EditorBuffer>.of(state)
+      ..remove(oldAbsolutePath)
+      ..[newAbsolutePath] = EditorBuffer(
+        absolutePath: newAbsolutePath,
+        format: existing.format,
+        savedEntries: existing.savedEntries,
+        savedBody: existing.savedBody,
+        currentEntries: existing.currentEntries,
+        currentBody: existing.currentBody,
+        lastSavedAt: existing.lastSavedAt,
+      );
+    state = next;
+  }
 }
 
 final editorBuffersProvider =

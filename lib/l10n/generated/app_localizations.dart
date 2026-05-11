@@ -226,6 +226,162 @@ abstract class AppLocalizations {
   /// **'No project open.'**
   String get treeNoProject;
 
+  /// No description provided for @treeMenuNewFile.
+  ///
+  /// In en, this message translates to:
+  /// **'New file…'**
+  String get treeMenuNewFile;
+
+  /// No description provided for @treeMenuNewFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'New folder…'**
+  String get treeMenuNewFolder;
+
+  /// No description provided for @treeMenuOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get treeMenuOpen;
+
+  /// No description provided for @treeMenuRename.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename…'**
+  String get treeMenuRename;
+
+  /// No description provided for @treeMenuDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get treeMenuDuplicate;
+
+  /// No description provided for @treeMenuDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete…'**
+  String get treeMenuDelete;
+
+  /// No description provided for @treeMenuReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal in file manager'**
+  String get treeMenuReveal;
+
+  /// No description provided for @treeMenuWriteRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only outside content/, static/, assets/, data/, layouts/'**
+  String get treeMenuWriteRestricted;
+
+  /// No description provided for @newFileDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New file'**
+  String get newFileDialogTitle;
+
+  /// No description provided for @newFolderDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New folder'**
+  String get newFolderDialogTitle;
+
+  /// No description provided for @newFileNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Filename (e.g. my-post.md)'**
+  String get newFileNameHint;
+
+  /// No description provided for @newFolderNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder name'**
+  String get newFolderNameHint;
+
+  /// No description provided for @newFileUseTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert Hugo frontmatter template'**
+  String get newFileUseTemplate;
+
+  /// No description provided for @renameDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get renameDialogTitle;
+
+  /// No description provided for @renameDialogHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New name'**
+  String get renameDialogHint;
+
+  /// No description provided for @deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete?'**
+  String get deleteConfirmTitle;
+
+  /// No description provided for @deleteConfirmFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {name}? This can\'t be undone.'**
+  String deleteConfirmFile(String name);
+
+  /// No description provided for @deleteConfirmFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete folder {name} and everything in it? This can\'t be undone.'**
+  String deleteConfirmFolder(String name);
+
+  /// No description provided for @dialogCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get dialogCreate;
+
+  /// No description provided for @dialogRename.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get dialogRename;
+
+  /// No description provided for @dialogDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get dialogDelete;
+
+  /// No description provided for @dialogCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get dialogCancel;
+
+  /// No description provided for @mutationErrorAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'A file or folder with that name already exists here.'**
+  String get mutationErrorAlreadyExists;
+
+  /// No description provided for @mutationErrorInvalidName.
+  ///
+  /// In en, this message translates to:
+  /// **'That name isn\'t allowed.'**
+  String get mutationErrorInvalidName;
+
+  /// No description provided for @mutationErrorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The file or folder no longer exists.'**
+  String get mutationErrorNotFound;
+
+  /// No description provided for @mutationErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation failed: {detail}'**
+  String mutationErrorGeneric(String detail);
+
   /// No description provided for @editorPlaceholder.
   ///
   /// In en, this message translates to:
@@ -459,6 +615,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hugo: stopped'**
   String get toolbarHugoStopped;
+
+  /// No description provided for @hugoStatusStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo: stopped'**
+  String get hugoStatusStopped;
+
+  /// No description provided for @hugoStatusStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo: starting…'**
+  String get hugoStatusStarting;
+
+  /// No description provided for @hugoStatusRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo: :{port}'**
+  String hugoStatusRunning(int port);
+
+  /// No description provided for @hugoStatusError.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo: error'**
+  String get hugoStatusError;
+
+  /// No description provided for @hugoActionStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Hugo serve'**
+  String get hugoActionStart;
+
+  /// No description provided for @hugoActionStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Hugo serve'**
+  String get hugoActionStop;
+
+  /// No description provided for @hugoActionRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart Hugo serve'**
+  String get hugoActionRestart;
+
+  /// No description provided for @previewAddressBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get previewAddressBar;
+
+  /// No description provided for @previewActionBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get previewActionBack;
+
+  /// No description provided for @previewActionForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Forward'**
+  String get previewActionForward;
+
+  /// No description provided for @previewActionReload.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload'**
+  String get previewActionReload;
+
+  /// No description provided for @previewActionOpenInBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in browser'**
+  String get previewActionOpenInBrowser;
+
+  /// No description provided for @previewWaitingForHugo.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Hugo to start…'**
+  String get previewWaitingForHugo;
+
+  /// No description provided for @previewHugoNotRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo isn\'t running yet. Start it from the toolbar.'**
+  String get previewHugoNotRunning;
+
+  /// No description provided for @previewHugoError.
+  ///
+  /// In en, this message translates to:
+  /// **'Hugo encountered an error. See logs and toolbar status.'**
+  String get previewHugoError;
+
+  /// No description provided for @previewWebviewUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Embedded preview is available on macOS for now; use Open in browser on other platforms.'**
+  String get previewWebviewUnavailable;
 
   /// No description provided for @toolbarBranchPlaceholder.
   ///

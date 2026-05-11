@@ -49,6 +49,14 @@ abstract interface class FileSystem {
   Future<void> deleteFile(String path);
   Future<void> renameFile(String fromPath, String toPath);
 
+  /// Rename a file *or* a directory at [fromPath] onto [toPath]. Dispatches
+  /// to the correct dart:io call based on which exists.
+  Future<void> renameNode(String fromPath, String toPath);
+
+  /// Recursively delete a file or directory. No-op if the path doesn't
+  /// exist.
+  Future<void> deleteRecursive(String path);
+
   /// Writes [content] to a sibling temp file then renames it onto [path], so
   /// concurrent readers (such as Hugo serve) never observe a half-written
   /// file. Falls back to a direct write if the rename fails.
@@ -116,6 +124,32 @@ class RealFileSystem implements FileSystem {
       throw FileSystemException('Source file not found: $fromPath');
     }
     src.renameSync(toPath);
+  }
+
+  @override
+  Future<void> renameNode(String fromPath, String toPath) async {
+    if (io.Directory(fromPath).existsSync()) {
+      io.Directory(fromPath).renameSync(toPath);
+      return;
+    }
+    if (io.File(fromPath).existsSync()) {
+      io.File(fromPath).renameSync(toPath);
+      return;
+    }
+    throw FileSystemException('Source not found: $fromPath');
+  }
+
+  @override
+  Future<void> deleteRecursive(String path) async {
+    final dir = io.Directory(path);
+    if (dir.existsSync()) {
+      dir.deleteSync(recursive: true);
+      return;
+    }
+    final file = io.File(path);
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
   }
 
   @override
@@ -260,6 +294,43 @@ class InMemoryFileSystem implements FileSystem {
     }
     _entries.remove(p.normalize(fromPath));
     addFile(toPath, content: src.content ?? '');
+  }
+
+  @override
+  Future<void> renameNode(String fromPath, String toPath) async {
+    final fromNorm = p.normalize(fromPath);
+    final toNorm = p.normalize(toPath);
+    if (!_entries.containsKey(fromNorm)) {
+      throw FileSystemException('Source not found: $fromPath');
+    }
+    final sep = p.separator;
+    final fromPrefix = fromNorm.endsWith(sep) ? fromNorm : '$fromNorm$sep';
+    final updates = <String, _Entry>{};
+    final removals = <String>[];
+    for (final entry in _entries.entries) {
+      if (entry.key == fromNorm) {
+        removals.add(entry.key);
+        updates[toNorm] = entry.value;
+      } else if (entry.key.startsWith(fromPrefix)) {
+        removals.add(entry.key);
+        final suffix = entry.key.substring(fromNorm.length);
+        updates['$toNorm$suffix'] = entry.value;
+      }
+    }
+    for (final r in removals) {
+      _entries.remove(r);
+    }
+    _entries.addAll(updates);
+  }
+
+  @override
+  Future<void> deleteRecursive(String path) async {
+    final norm = p.normalize(path);
+    final sep = p.separator;
+    final prefix = norm.endsWith(sep) ? norm : '$norm$sep';
+    _entries.removeWhere(
+      (key, _) => key == norm || key.startsWith(prefix),
+    );
   }
 
   @override

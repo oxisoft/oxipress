@@ -181,8 +181,6 @@ class _DocumentView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const _ModeToggleStub(),
-        Divider(height: 1, color: theme.colorScheme.outlineVariant),
         _FrontmatterSection(absolutePath: absolutePath),
         Divider(height: 1, color: theme.colorScheme.outlineVariant),
         Expanded(
@@ -259,35 +257,83 @@ class _FrontmatterSection extends ConsumerWidget {
   }
 }
 
-class _ModeToggleStub extends StatelessWidget {
-  const _ModeToggleStub();
+/// Compact Raw / Rich mode chip-pair for the editor panel's header actions
+/// slot. Rich mode is disabled until Phase 9; this is a stub that conveys
+/// the affordance without consuming a vertical row in the editor body.
+class EditorModeToggle extends StatelessWidget {
+  const EditorModeToggle({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    return Tooltip(
+      message: l10n.editorModeRichComingSoon,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _ModeChip(
+              icon: Icons.code,
+              label: l10n.editorModeRaw,
+              selected: true,
+            ),
+            _ModeChip(
+              icon: Icons.text_fields,
+              label: l10n.editorModeRich,
+              selected: false,
+              enabled: false,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ModeChip extends StatelessWidget {
+  const _ModeChip({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    this.enabled = true,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = selected
+        ? theme.colorScheme.onPrimaryContainer
+        : (enabled
+            ? theme.colorScheme.onSurfaceVariant
+            : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4));
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      color: theme.colorScheme.surfaceContainerLow,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: selected ? theme.colorScheme.primaryContainer : null,
+        borderRadius: BorderRadius.circular(6),
+      ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Tooltip(
-            message: l10n.editorModeRichComingSoon,
-            child: SegmentedButton<_EditorMode>(
-              segments: <ButtonSegment<_EditorMode>>[
-                ButtonSegment(
-                  value: _EditorMode.raw,
-                  icon: const Icon(Icons.code, size: 16),
-                  label: Text(l10n.editorModeRaw),
-                ),
-                ButtonSegment(
-                  value: _EditorMode.rich,
-                  icon: const Icon(Icons.text_fields, size: 16),
-                  label: Text(l10n.editorModeRich),
-                ),
-              ],
-              selected: const {_EditorMode.raw},
-              onSelectionChanged: null,
+          Icon(icon, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: color,
+              fontWeight:
+                  selected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
         ],
@@ -295,8 +341,6 @@ class _ModeToggleStub extends StatelessWidget {
     );
   }
 }
-
-enum _EditorMode { raw, rich }
 
 class _Placeholder extends StatelessWidget {
   const _Placeholder({required this.text});

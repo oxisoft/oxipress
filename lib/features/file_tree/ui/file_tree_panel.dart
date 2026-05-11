@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
@@ -9,9 +11,13 @@ import '../../editor/domain/editor_buffer.dart';
 import '../../project/domain/workspace_state.dart';
 import '../../project/ui/project_controller.dart';
 import '../../project/ui/workspace_state_controller.dart';
+import '../data/file_tree_mutations.dart';
+import '../data/file_tree_mutations_service.dart';
 import '../domain/file_tree_node.dart';
 import '../domain/file_tree_view.dart';
+import '../domain/path_policy.dart';
 import 'file_tree_controller.dart';
+import 'tree_dialogs.dart';
 
 class FileTreePanel extends ConsumerWidget {
   const FileTreePanel({super.key});
@@ -155,6 +161,16 @@ class _Row {
   final int depth;
 }
 
+enum _TreeAction {
+  newFile,
+  newFolder,
+  open,
+  rename,
+  duplicate,
+  delete,
+  reveal,
+}
+
 class _TreeRow extends ConsumerWidget {
   const _TreeRow({required this.row, required this.view});
 
@@ -168,42 +184,55 @@ class _TreeRow extends ConsumerWidget {
     final isExpanded = row.node.isDirectory &&
         view.expandedFolders.contains(row.node.path);
 
-    return Material(
-      color: isSelected
-          ? theme.colorScheme.primaryContainer.withValues(alpha: 0.6)
-          : Colors.transparent,
-      child: InkWell(
-        onTap: () => _onTap(ref),
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 8.0 + row.depth * 14,
-            right: 8,
-          ),
-          child: Row(
-            children: [
-              Icon(
-                _iconFor(row.node, isExpanded),
-                size: 16,
-                color: row.node.isDirectory
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  _buildLabel(ref),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight:
-                        isSelected ? FontWeight.w600 : FontWeight.w400,
-                  ),
+    return Builder(
+      builder: (rowContext) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onSecondaryTapDown: (details) {
+            unawaited(
+              _showContextMenu(rowContext, ref, details.globalPosition),
+            );
+          },
+          child: Material(
+            color: isSelected
+                ? theme.colorScheme.primaryContainer.withValues(alpha: 0.6)
+                : Colors.transparent,
+            child: InkWell(
+              onTap: () => _onTap(ref),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 8.0 + row.depth * 14,
+                  right: 8,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _iconFor(row.node, isExpanded),
+                      size: 16,
+                      color: row.node.isDirectory
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        _buildLabel(ref),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -239,6 +268,228 @@ class _TreeRow extends ConsumerWidget {
       // ignore: unawaited_futures, discarded_futures
       ref.read(osOpenerProvider).open(row.node.path);
     }
+  }
+
+  Future<void> _showContextMenu(
+    BuildContext context,
+    WidgetRef ref,
+    Offset globalPosition,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final overlay = Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final lifecycle = ref.read(projectControllerProvider);
+    final workspace = ref.read(workspaceStateProvider).value;
+    final isFile = !row.node.isDirectory;
+    final isProjectRoot =
+        workspace?.treeRootMode == TreeRootMode.projectRoot;
+    final restricted = isProjectRoot &&
+        lifecycle is OpenProject &&
+        !isWriteAllowed(
+          projectPath: lifecycle.project.path,
+          absolutePath: row.node.path,
+        );
+
+    final action = await showMenu<_TreeAction>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        globalPosition.dx,
+        globalPosition.dy,
+        overlay.size.width - globalPosition.dx,
+        overlay.size.height - globalPosition.dy,
+      ),
+      items: [
+        if (isFile)
+          PopupMenuItem(
+            value: _TreeAction.open,
+            child: Text(l10n.treeMenuOpen),
+          )
+        else ...[
+          PopupMenuItem(
+            value: _TreeAction.newFile,
+            enabled: !restricted,
+            child: Text(l10n.treeMenuNewFile),
+          ),
+          PopupMenuItem(
+            value: _TreeAction.newFolder,
+            enabled: !restricted,
+            child: Text(l10n.treeMenuNewFolder),
+          ),
+        ],
+        const PopupMenuDivider(),
+        PopupMenuItem(
+          value: _TreeAction.rename,
+          enabled: !restricted,
+          child: Text(l10n.treeMenuRename),
+        ),
+        if (isFile)
+          PopupMenuItem(
+            value: _TreeAction.duplicate,
+            enabled: !restricted,
+            child: Text(l10n.treeMenuDuplicate),
+          ),
+        PopupMenuItem(
+          value: _TreeAction.delete,
+          enabled: !restricted,
+          child: Text(l10n.treeMenuDelete),
+        ),
+        const PopupMenuDivider(),
+        PopupMenuItem(
+          value: _TreeAction.reveal,
+          child: Text(l10n.treeMenuReveal),
+        ),
+      ],
+    );
+
+    if (action == null) return;
+    if (!context.mounted) return;
+    await _handleAction(context, ref, action);
+  }
+
+  Future<void> _handleAction(
+    BuildContext context,
+    WidgetRef ref,
+    _TreeAction action,
+  ) async {
+    switch (action) {
+      case _TreeAction.open:
+        _onTap(ref);
+      case _TreeAction.reveal:
+        await ref.read(revealInFileManagerProvider).reveal(row.node.path);
+      case _TreeAction.newFile:
+        await _handleNewFile(context, ref);
+      case _TreeAction.newFolder:
+        await _handleNewFolder(context, ref);
+      case _TreeAction.rename:
+        await _handleRename(context, ref);
+      case _TreeAction.duplicate:
+        await _handleDuplicate(context, ref);
+      case _TreeAction.delete:
+        await _handleDelete(context, ref);
+    }
+  }
+
+  Future<void> _handleNewFile(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final result = await showNewFileDialog(context);
+    if (result == null) return;
+    final outcome = await ref
+        .read(fileTreeMutationsServiceProvider)
+        .createFile(
+          parentDir: row.node.path,
+          name: result.name,
+          useTemplate: result.useTemplate,
+        );
+    if (!context.mounted) return;
+    outcome.fold(
+      (newPath) => _openFileAfterCreate(ref, newPath),
+      (error) => _showError(context, ref, error),
+    );
+    // Make sure the folder is expanded so the new file is visible.
+    unawaited(
+      ref
+          .read(workspaceStateProvider.notifier)
+          .setFolderExpanded(row.node.path, expanded: true),
+    );
+  }
+
+  Future<void> _handleNewFolder(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final name = await showNewFolderDialog(context);
+    if (name == null) return;
+    final outcome = await ref
+        .read(fileTreeMutationsServiceProvider)
+        .createFolder(parentDir: row.node.path, name: name);
+    if (!context.mounted) return;
+    outcome.fold(
+      (_) {},
+      (error) => _showError(context, ref, error),
+    );
+    unawaited(
+      ref
+          .read(workspaceStateProvider.notifier)
+          .setFolderExpanded(row.node.path, expanded: true),
+    );
+  }
+
+  Future<void> _handleRename(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final newName =
+        await showRenameDialog(context, currentName: row.node.name);
+    if (newName == null || newName == row.node.name) return;
+    final outcome = await ref
+        .read(fileTreeMutationsServiceProvider)
+        .renameNode(absolutePath: row.node.path, newName: newName);
+    if (!context.mounted) return;
+    outcome.fold(
+      (_) {},
+      (error) => _showError(context, ref, error),
+    );
+  }
+
+  Future<void> _handleDuplicate(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final outcome = await ref
+        .read(fileTreeMutationsServiceProvider)
+        .duplicate(absolutePath: row.node.path);
+    if (!context.mounted) return;
+    outcome.fold(
+      (_) {},
+      (error) => _showError(context, ref, error),
+    );
+  }
+
+  Future<void> _handleDelete(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final confirm = await showDeleteConfirm(
+      context,
+      name: row.node.name,
+      isDirectory: row.node.isDirectory,
+    );
+    if (!confirm) return;
+    if (!context.mounted) return;
+    final outcome = await ref
+        .read(fileTreeMutationsServiceProvider)
+        .delete(absolutePath: row.node.path);
+    if (!context.mounted) return;
+    outcome.fold(
+      (_) {},
+      (error) => _showError(context, ref, error),
+    );
+  }
+
+  void _openFileAfterCreate(WidgetRef ref, String absolutePath) {
+    final lifecycle = ref.read(projectControllerProvider);
+    if (lifecycle is! OpenProject) return;
+    final relative =
+        p.relative(absolutePath, from: lifecycle.project.path);
+    ref.read(workspaceStateProvider.notifier).openTab(relative);
+  }
+
+  void _showError(
+    BuildContext context,
+    WidgetRef ref,
+    TreeMutationError error,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final message = switch (error) {
+      AlreadyExistsError() => l10n.mutationErrorAlreadyExists,
+      InvalidNameError() => l10n.mutationErrorInvalidName,
+      NotFoundError() => l10n.mutationErrorNotFound,
+      IoError(:final detail) => l10n.mutationErrorGeneric(detail),
+    };
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   IconData _iconFor(FileTreeNode node, bool expanded) {
