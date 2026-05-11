@@ -2,11 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!--
+	  OxiPress is a developer tool that needs unrestricted access to user-
+	  picked Hugo project folders, plus the ability to spawn `hugo`, `git`,
+	  and a shell PTY in later phases. We run with the sandbox disabled
+	  (same trade-off as VS Code, IntelliJ, etc.) but keep the user-selected
+	  files entitlement because the file_picker plugin enforces its
+	  presence before opening NSOpenPanel.
+	-->
 	<key>com.apple.security.app-sandbox</key>
-	<true/>
+	<false/>
 	<key>com.apple.security.cs.allow-jit</key>
 	<true/>
 	<key>com.apple.security.network.server</key>
+	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-write</key>
 	<true/>
 </dict>
 </plist>

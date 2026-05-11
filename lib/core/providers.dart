@@ -1,7 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'file_system.dart';
+import 'file_watcher.dart';
+import 'os_opener.dart';
 import 'process_runner.dart';
+import 'reveal_in_file_manager.dart';
 import 'storage.dart';
 
 /// Overridden in `main()` after `SharedPreferences.getInstance()` resolves.
@@ -19,4 +23,22 @@ final storageProvider = Provider<Storage>(
 
 final processRunnerProvider = Provider<ProcessRunner>(
   (ref) => const SystemProcessRunner(),
+);
+
+final fileSystemProvider = Provider<FileSystem>(
+  (ref) => const RealFileSystem(),
+);
+
+final fileWatcherProvider = Provider<FileWatcher>(
+  (ref) => const WatcherFileWatcher(),
+);
+
+final osOpenerProvider = Provider<OsOpener>(
+  (ref) => RealOsOpener(processRunner: ref.watch(processRunnerProvider)),
+);
+
+final revealInFileManagerProvider = Provider<RevealInFileManager>(
+  (ref) => RealRevealInFileManager(
+    processRunner: ref.watch(processRunnerProvider),
+  ),
 );

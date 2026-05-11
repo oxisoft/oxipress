@@ -4,6 +4,7 @@
   "@appName": {
     "description": "Application name"
   },
+
   "welcomeTagline": "Edit Hugo sites with live preview.",
   "@welcomeTagline": {
     "description": "Tagline shown on the welcome screen"
@@ -12,8 +13,263 @@
   "@openProject": {
     "description": "Open Project button on welcome screen"
   },
-  "openProjectComingSoon": "Project loading lands in Phase 1.",
-  "@openProjectComingSoon": {
-    "description": "Tooltip on the disabled Open Project button during Phase 0"
-  }
+  "openingProject": "Opening project…",
+  "@openingProject": {
+    "description": "Status while a project is being opened"
+  },
+  "recentProjects": "Recent projects",
+  "@recentProjects": {
+    "description": "Header for the recent projects list on welcome"
+  },
+  "noRecentProjects": "No recent projects yet.",
+  "@noRecentProjects": {
+    "description": "Empty state under recent projects"
+  },
+  "documentation": "Documentation",
+  "@documentation": {
+    "description": "Documentation link label"
+  },
+  "documentationComingSoon": "Documentation site is not yet published.",
+  "@documentationComingSoon": {
+    "description": "Snackbar shown when the documentation link is tapped"
+  },
+  "removeFromRecents": "Remove from recents",
+  "@removeFromRecents": {
+    "description": "Tooltip on the remove icon next to a recent entry"
+  },
+
+  "errorPathDoesNotExist": "The selected folder does not exist.",
+  "@errorPathDoesNotExist": {},
+  "errorMissingContentDirectory": "The selected folder is not a Hugo site (missing content/ directory).",
+  "@errorMissingContentDirectory": {},
+  "errorMissingHugoConfig": "The selected folder is not a Hugo site (no hugo.toml/yaml/json or legacy config.* found).",
+  "@errorMissingHugoConfig": {},
+  "errorNotADirectory": "The selected path is not a folder.",
+  "@errorNotADirectory": {},
+
+  "panelTitleFiles": "Files",
+  "@panelTitleFiles": {},
+  "panelTitleEditor": "Editor",
+  "@panelTitleEditor": {},
+  "panelTitlePreview": "Preview",
+  "@panelTitlePreview": {},
+  "collapsePanel": "Collapse panel",
+  "@collapsePanel": {},
+  "expandPanel": "Expand panel",
+  "@expandPanel": {},
+
+  "treeRootContent": "Show content folder",
+  "@treeRootContent": {},
+  "treeRootProjectRoot": "Show project root",
+  "@treeRootProjectRoot": {},
+  "treeEmpty": "This directory is empty.",
+  "@treeEmpty": {},
+  "treeNoProject": "No project open.",
+  "@treeNoProject": {},
+  "treeMenuNewFile": "New file…",
+  "@treeMenuNewFile": {},
+  "treeMenuNewFolder": "New folder…",
+  "@treeMenuNewFolder": {},
+  "treeMenuOpen": "Open",
+  "@treeMenuOpen": {},
+  "treeMenuRename": "Rename…",
+  "@treeMenuRename": {},
+  "treeMenuDuplicate": "Duplicate",
+  "@treeMenuDuplicate": {},
+  "treeMenuDelete": "Delete…",
+  "@treeMenuDelete": {},
+  "treeMenuReveal": "Reveal in file manager",
+  "@treeMenuReveal": {},
+  "treeMenuWriteRestricted": "Read-only outside content/, static/, assets/, data/, layouts/",
+  "@treeMenuWriteRestricted": {},
+  "newFileDialogTitle": "New file",
+  "@newFileDialogTitle": {},
+  "newFolderDialogTitle": "New folder",
+  "@newFolderDialogTitle": {},
+  "newFileNameHint": "Filename (e.g. my-post.md)",
+  "@newFileNameHint": {},
+  "newFolderNameHint": "Folder name",
+  "@newFolderNameHint": {},
+  "newFileUseTemplate": "Insert Hugo frontmatter template",
+  "@newFileUseTemplate": {},
+  "renameDialogTitle": "Rename",
+  "@renameDialogTitle": {},
+  "renameDialogHint": "New name",
+  "@renameDialogHint": {},
+  "deleteConfirmTitle": "Delete?",
+  "@deleteConfirmTitle": {},
+  "deleteConfirmFile": "Delete {name}? This can't be undone.",
+  "@deleteConfirmFile": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "deleteConfirmFolder": "Delete folder {name} and everything in it? This can't be undone.",
+  "@deleteConfirmFolder": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "dialogCreate": "Create",
+  "@dialogCreate": {},
+  "dialogRename": "Rename",
+  "@dialogRename": {},
+  "dialogDelete": "Delete",
+  "@dialogDelete": {},
+  "dialogCancel": "Cancel",
+  "@dialogCancel": {},
+  "mutationErrorAlreadyExists": "A file or folder with that name already exists here.",
+  "@mutationErrorAlreadyExists": {},
+  "mutationErrorInvalidName": "That name isn't allowed.",
+  "@mutationErrorInvalidName": {},
+  "mutationErrorNotFound": "The file or folder no longer exists.",
+  "@mutationErrorNotFound": {},
+  "mutationErrorGeneric": "Operation failed: {detail}",
+  "@mutationErrorGeneric": {
+    "placeholders": {
+      "detail": {"type": "String"}
+    }
+  },
+
+  "editorPlaceholder": "Open a markdown file from the tree.",
+  "@editorPlaceholder": {},
+  "editorEmptyBody": "(empty body)",
+  "@editorEmptyBody": {},
+  "editorModeRaw": "Raw",
+  "@editorModeRaw": {},
+  "editorModeRich": "Rich",
+  "@editorModeRich": {},
+  "editorModeRichComingSoon": "Rich-text mode arrives in Phase 9.",
+  "@editorModeRichComingSoon": {},
+  "editorTabListTooltip": "Show all open tabs",
+  "@editorTabListTooltip": {},
+  "externalChangeTitle": "File changed on disk",
+  "@externalChangeTitle": {},
+  "externalChangeBody": "{path} changed externally while you have unsaved edits. What do you want to do?",
+  "@externalChangeBody": {
+    "placeholders": {
+      "path": {"type": "String"}
+    }
+  },
+  "externalChangeKeepMine": "Keep my changes",
+  "@externalChangeKeepMine": {},
+  "externalChangeReloadDisk": "Reload from disk (lose changes)",
+  "@externalChangeReloadDisk": {},
+  "findReplaceTitle": "Find / Replace",
+  "@findReplaceTitle": {},
+  "findHint": "Find",
+  "@findHint": {},
+  "replaceHint": "Replace",
+  "@replaceHint": {},
+  "findCaseSensitive": "Case sensitive",
+  "@findCaseSensitive": {},
+  "findWholeWord": "Whole word",
+  "@findWholeWord": {},
+  "findRegex": "Regex",
+  "@findRegex": {},
+  "findPrev": "Previous match",
+  "@findPrev": {},
+  "findNext": "Next match",
+  "@findNext": {},
+  "findReplaceOne": "Replace",
+  "@findReplaceOne": {},
+  "findReplaceAll": "Replace all",
+  "@findReplaceAll": {},
+  "findClose": "Close find/replace",
+  "@findClose": {},
+  "findMatchCount": "{current} of {total}",
+  "@findMatchCount": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "findNoMatches": "No matches",
+  "@findNoMatches": {},
+  "closeTabUnsavedTitle": "Save changes before closing?",
+  "@closeTabUnsavedTitle": {},
+  "closeTabUnsavedBody": "{basename} has unsaved changes.",
+  "@closeTabUnsavedBody": {
+    "placeholders": {
+      "basename": {"type": "String"}
+    }
+  },
+  "closeTabSave": "Save",
+  "@closeTabSave": {},
+  "closeTabDontSave": "Don't save",
+  "@closeTabDontSave": {},
+  "closeTabCancel": "Cancel",
+  "@closeTabCancel": {},
+  "frontmatterEmpty": "No frontmatter detected.",
+  "@frontmatterEmpty": {},
+  "frontmatterFormatLabel": "Frontmatter · {format}",
+  "@frontmatterFormatLabel": {
+    "placeholders": {
+      "format": {"type": "String"}
+    }
+  },
+  "frontmatterSectionTitle": "Frontmatter",
+  "@frontmatterSectionTitle": {},
+  "frontmatterExpand": "Expand frontmatter",
+  "@frontmatterExpand": {},
+  "frontmatterCollapse": "Collapse frontmatter",
+  "@frontmatterCollapse": {},
+  "previewPlaceholder": "Live preview becomes available in Phase 5.",
+  "@previewPlaceholder": {},
+
+  "toolbarSaveTooltip": "Save (Ctrl/Cmd+S)",
+  "@toolbarSaveTooltip": {},
+  "toolbarSaveDisabledTooltip": "No unsaved changes",
+  "@toolbarSaveDisabledTooltip": {},
+  "toolbarSettingsTooltip": "Settings (lands in Phase 10)",
+  "@toolbarSettingsTooltip": {},
+  "toolbarCloseProject": "Close project",
+  "@toolbarCloseProject": {},
+  "toolbarHugoStopped": "Hugo: stopped",
+  "@toolbarHugoStopped": {},
+  "hugoStatusStopped": "Hugo: stopped",
+  "@hugoStatusStopped": {},
+  "hugoStatusStarting": "Hugo: starting…",
+  "@hugoStatusStarting": {},
+  "hugoStatusRunning": "Hugo: :{port}",
+  "@hugoStatusRunning": {
+    "placeholders": {
+      "port": {"type": "int"}
+    }
+  },
+  "hugoStatusError": "Hugo: error",
+  "@hugoStatusError": {},
+  "hugoActionStart": "Start Hugo serve",
+  "@hugoActionStart": {},
+  "hugoActionStop": "Stop Hugo serve",
+  "@hugoActionStop": {},
+  "hugoActionRestart": "Restart Hugo serve",
+  "@hugoActionRestart": {},
+  "previewAddressBar": "Address",
+  "@previewAddressBar": {},
+  "previewActionBack": "Back",
+  "@previewActionBack": {},
+  "previewActionForward": "Forward",
+  "@previewActionForward": {},
+  "previewActionReload": "Reload",
+  "@previewActionReload": {},
+  "previewActionOpenInBrowser": "Open in browser",
+  "@previewActionOpenInBrowser": {},
+  "previewWaitingForHugo": "Waiting for Hugo to start…",
+  "@previewWaitingForHugo": {},
+  "previewHugoNotRunning": "Hugo isn't running yet. Start it from the toolbar.",
+  "@previewHugoNotRunning": {},
+  "previewHugoError": "Hugo encountered an error. See logs and toolbar status.",
+  "@previewHugoError": {},
+  "previewWebviewUnavailable": "Embedded preview is available on macOS for now; use Open in browser on other platforms.",
+  "@previewWebviewUnavailable": {},
+  "toolbarBranchPlaceholder": "branch —",
+  "@toolbarBranchPlaceholder": {},
+
+  "statusBarReady": "Ready",
+  "@statusBarReady": {},
+  "statusBarCursorPlaceholder": "Ln —, Col —",
+  "@statusBarCursorPlaceholder": {},
+  "statusBarLastSavedPlaceholder": "Last saved: —",
+  "@statusBarLastSavedPlaceholder": {}
 }
